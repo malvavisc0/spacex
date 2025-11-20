@@ -114,6 +114,7 @@ def filter_launches(
     end: Optional[str],
     rocket: Optional[str],
     site: Optional[str],
+    limit: int = 20,
 ) -> List[Launch]:
     query: dict = {}
 
@@ -133,7 +134,7 @@ def filter_launches(
         query["launchpad"] = site
 
     with SyncCacheClient(timeout=10.0, base_url=BASE_URL) as client:
-        payload = {"query": query, "options": {}}
+        payload = {"query": query, "options": {"limit": limit, "sort": {"date_utc": -1}}}
 
         response = client.post(f"/launches/query", json=payload)
         response.raise_for_status()

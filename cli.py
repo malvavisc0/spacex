@@ -17,9 +17,12 @@ def launches(
     end: Annotated[str, typer.Option(help="End date (YYYY-MM-DD)")] = "",
     rocket: Annotated[str, typer.Option(help="Rocket name or ID")] = "",
     launchpad: Annotated[str, typer.Option(help="Launch site name")] = "",
+    limit: Annotated[int, typer.Option(help="Launch site name")] = 10,
 ):
     table = Table("ID", "Date", "Rocket", "Launchpad", "Details")
-    for launch in v4.filter_launches(start=start, end=end, rocket=rocket, site=launchpad):
+    for launch in v4.filter_launches(
+        start=start, end=end, rocket=rocket, site=launchpad, limit=limit
+    ):
         table.add_row(
             launch.id,
             str(launch.date),
