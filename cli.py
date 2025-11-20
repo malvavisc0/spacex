@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import json
+
 import typer
 from rich.console import Console
 from rich.table import Table
@@ -18,13 +20,25 @@ def launches(
     end: Annotated[str, typer.Option(help="End date (YYYY-MM-DD)")] = "",
     rocket: Annotated[str, typer.Option(help="Rocket name or ID")] = "",
     launchpad: Annotated[str, typer.Option(help="Launch site name")] = "",
+    export: Annotated[str, typer.Option(help="Export to JSON file")] = "",
     limit: Annotated[int, typer.Option(help="Launch site name")] = 10,
 ):
     try:
-        table = Table("ID", "Date", "Rocket", "Launchpad", "Details")
-        for launch in v4.filter_launches(
+        all_launches = v4.filter_launches(
             start=start, end=end, rocket=rocket, site=launchpad, limit=limit
-        ):
+        )
+
+        if export:
+            launches_data = [launch.model_dump(mode="json") for launch in all_launches]
+            with open(export, "w", encoding="utf-8") as file:
+                json.dump(launches_data, file)
+            console.print(
+                f"Exported {len(launches_data)} launches to [green]{export}[/green]"
+            )
+            raise typer.Exit(code=0)
+
+        table = Table("ID", "Date", "Rocket", "Launchpad", "Details")
+        for launch in all_launches:
             table.add_row(
                 launch.id,
                 str(launch.date),
