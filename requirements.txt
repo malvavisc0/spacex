@@ -1,3 +1,6 @@
 typer
 httpx[httpcore]
-httpcache
+hishel[httpx] 
+pydantic
+orjson
+pytz
