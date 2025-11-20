@@ -21,10 +21,10 @@ python cli.py launches
 python cli.py launches --start 2024-01-01 --end 2024-12-31
 
 # By rocket
-python cli.py launches --rocket "Falcon 9"
+python cli.py launches --rocket "5e9d0d95eda69955f709d1eb"
 
 # By launchpad
-python cli.py launches --launchpad "KSC LC 39A"
+python cli.py launches --launchpad "5e9e4502f5090927f8566f85"
 
 # Limit results
 python cli.py launches --limit 5
