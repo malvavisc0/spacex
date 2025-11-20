@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-from datetime import datetime, timezone
-
 import typer
 from rich.console import Console
 from rich.table import Table
@@ -18,14 +16,10 @@ def launches(
     start: Annotated[str, typer.Option(help="Start date (YYYY-MM-DD)")] = "",
     end: Annotated[str, typer.Option(help="End date (YYYY-MM-DD)")] = "",
     rocket: Annotated[str, typer.Option(help="Rocket name or ID")] = "",
-    success: Annotated[bool, typer.Option(help="Show only successful launches")] = False,
-    failed: Annotated[bool, typer.Option(help="Show only failed launches")] = False,
     launchpad: Annotated[str, typer.Option(help="Launch site name")] = "",
 ):
     table = Table("ID", "Date", "Rocket", "Launchpad", "Details")
-    for launch in v4.filter_launches(
-        start=start, end=end, rocket=rocket, success=success, failed=failed, site=launchpad
-    ):
+    for launch in v4.filter_launches(start=start, end=end, rocket=rocket, site=launchpad):
         table.add_row(
             launch.id,
             str(launch.date),

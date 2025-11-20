@@ -113,12 +113,10 @@ def filter_launches(
     start: Optional[str],
     end: Optional[str],
     rocket: Optional[str],
-    success: Optional[bool],
-    failed: Optional[bool],
     site: Optional[str],
 ) -> List[Launch]:
     query: dict = {}
-    
+
     date_query = {}
     if start:
         date_query["$gte"] = f"{start}T00:00:00.000Z"
@@ -128,12 +126,12 @@ def filter_launches(
         date_query = None
     if date_query:
         query["date_utc"] = date_query
-    
+
     if rocket:
         query["rocket"] = rocket
     if site:
         query["launchpad"] = site
-    
+
     with SyncCacheClient(timeout=10.0, base_url=BASE_URL) as client:
         payload = {"query": query, "options": {}}
 
